@@ -1,5 +1,5 @@
-from service.course_service import CourseService
 from model.course import Course
+from service.course_service import CourseService
 
 
 class CourseBusiness:

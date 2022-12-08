@@ -3,7 +3,7 @@ import requests
 
 URL = 'https://petstore.swagger.io/v2/'
 ID_USUARIO = 4781678
-STATUS_CODE_ESPERADO = 200
+STATUS_CODE_EXPECTED = 200
 
 
 @pytest.fixture
@@ -26,77 +26,77 @@ def test_store_user(user):
 
     request = requests.post(f'{URL}user', json=user)
 
-    assert request.status_code == STATUS_CODE_ESPERADO
+    assert request.status_code == STATUS_CODE_EXPECTED
 
 
 @pytest.mark.order(2)
 def test_get_user():
-    username = 'Isaac'
-    email_esperado = 'admin@admin'
-    firstname_esperado = 'Batata'
+    user_name = 'Isaac'
+    email_expected = 'admin@admin'
+    first_name_expected = 'Batata'
 
-    request = requests.get(f'{URL}user/{username}')
+    request = requests.get(f'{URL}user/{user_name}')
     json = request.json()
 
-    assert request.status_code == STATUS_CODE_ESPERADO
+    assert request.status_code == STATUS_CODE_EXPECTED
     assert json['id'] == ID_USUARIO
-    assert json['username'] == username
-    assert json['firstName'] == firstname_esperado
-    assert json['email'] == email_esperado
+    assert json['username'] == user_name
+    assert json['firstName'] == first_name_expected
+    assert json['email'] == email_expected
 
 
 @pytest.mark.order(3)
-def test_find_and_login():
+def test_find_and_test_login():
     user_name = 'Isaac'
-    token = login(user_name, consultar_usuario_extrair_senha(user_name))
+    token = login(user_name, find_user_get_password(user_name))
 
 
 @pytest.mark.order(5)
 def test_delete_user():
 
-    username = 'Testinho'
-    resposta = requests.delete(url=f'{URL}user/{username}')
-    json = resposta.json()
+    user_name = 'Testinho'
+    response = requests.delete(url=f'{URL}user/{user_name}')
+    json = response.json()
 
-    assert resposta.status_code == STATUS_CODE_ESPERADO
-    assert json['code'] == STATUS_CODE_ESPERADO
-    assert json['message'] == username
+    assert response.status_code == STATUS_CODE_EXPECTED
+    assert json['code'] == STATUS_CODE_EXPECTED
+    assert json['message'] == user_name
 
 
 @pytest.mark.order(4)
 def test_update_user(user):
-    username = 'Testinho'
+    user_name = 'Testinho'
 
-    user['username'] = username
+    user['username'] = user_name
 
-    resposta = requests.put(url=f'{URL}user/{username}', json=user)
-    json = resposta.json()
+    response = requests.put(url=f'{URL}user/{user_name}', json=user)
+    json = response.json()
 
-    assert resposta.status_code == STATUS_CODE_ESPERADO
-    assert json['code'] == STATUS_CODE_ESPERADO
+    assert response.status_code == STATUS_CODE_EXPECTED
+    assert json['code'] == STATUS_CODE_EXPECTED
     assert json['message'] == str(ID_USUARIO)
 
 
-def consultar_usuario_extrair_senha(username):
+def find_user_get_password(user_name: str) -> dict:
 
-    resposta = requests.get(f'{URL}user/{username}')
-    json = resposta.json()
+    response = requests.get(f'{URL}user/{user_name}')
+    json = response.json()
 
-    assert resposta.status_code == STATUS_CODE_ESPERADO
+    assert response.status_code == STATUS_CODE_EXPECTED
     return json['password']
 
 
-def login(username, password):
+def login(user_name: str, password: str) -> str:
 
-    mensagem_esperada = 'logged in user session:'
+    message_expected = 'logged in user session:'
 
-    resposta = requests.get(
-        f'{URL}user/login?username={username}&password={password}')
+    response = requests.get(
+        f'{URL}user/login?username={user_name}&password={password}')
 
-    json = resposta.json()
+    json = response.json()
 
     token = json['message'].rpartition(':')[-1]
 
-    assert resposta.status_code == STATUS_CODE_ESPERADO
-    assert mensagem_esperada in json['message']
+    assert response.status_code == STATUS_CODE_EXPECTED
+    assert message_expected in json['message']
     return token
