@@ -1,3 +1,17 @@
-# pet-project
+## Testes Unitários em Python
 
-Use este link do GitHub classroom para criar seu pet <https://classroom.github.com/a/AAEaFiAk>
+Para realizar os testar é necessario a instalação das bibliotécas utilizadas, atráves do comando:
+
+```sh
+
+pip install -r requirements.txt
+
+```
+
+A execução dos teste é feita atraves do comando:
+
+```sh
+
+pytest -vv
+
+```
