@@ -1,4 +1,4 @@
-## Testes Unitários em Python
+## Testes Unitários em Python com Pytest, Mock e Stub
 
 Para realizar os testar é necessario a instalação das bibliotécas utilizadas, atráves do comando:
 
